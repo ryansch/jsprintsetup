@@ -1,0 +1,718 @@
+<!-- MAIN CONTENT -->
+<h2>JSPrintSetup reference</h2>
+<p>JSPrintSetup is extension which give control to print settings through client side java script.</p>
+<p>Extension give possibilities to web developers to control printing behavior of browser using client side java script.</p>
+<p>Some of main features are:</p>
+<ul>
+	<li>Get/Set print settings - margins, orientation, scaling, header and footer</li>
+	<li>Get/Set global print settings and for selected printer</li>
+	<li>Working with installed printers</li>
+	<li>Save print settings to user preferences</li>
+	<li>Print with current setttings without need from saving to user pereferences as required from 'window.print()'</li>
+	<li>Print desired window or frame</li>
+	<li>Unattended printing without print dialog</li>
+	<li><a href="#ENHANCED_PAPERHANDLING">Enhanced Paper data handling (from ver. 0.9.0)</a></li>
+	<li>Host based <a href="#SECURITY_ACCESS">Security Access Control (from ver. 0.9.0)</a><br />
+<b style="color: red;">Important Note!</b><br />
+If your application is not conformable with jsPrintSetup access control, most of features of jsPrintSetup will 
+be inaccessible if user who is using application block access to jsPrintSetup on first request for permission.
+<br />
+Your application must implement these methods to get information about user's decision and rerequest permissions if needed or get alternate decision.
+<br />
+<br />
+	</li>
+</ul>
+<p>This is a short reference about JSPrintSetup object which give control over browser printing features.</p>
+<p>At first lets begin with sample code which demonstrate using of JSPrintSetup to setup print margins and call unattended print method (without print dialog).</p>
+<code><pre>
+&lt;script&gt;
+   // set portrait orientation
+   jsPrintSetup.setOption('orientation', jsPrintSetup.kPortraitOrientation);
+   // set top margins in millimeters
+   jsPrintSetup.setOption('marginTop', 15);
+   jsPrintSetup.setOption('marginBottom', 15);
+   jsPrintSetup.setOption('marginLeft', 20);
+   jsPrintSetup.setOption('marginRight', 10);
+   // set page header
+   jsPrintSetup.setOption('headerStrLeft', 'My custom header');
+   jsPrintSetup.setOption('headerStrCenter', '');
+   jsPrintSetup.setOption('headerStrRight', '&amp;PT');
+   // set empty page footer
+   jsPrintSetup.setOption('footerStrLeft', '');
+   jsPrintSetup.setOption('footerStrCenter', '');
+   jsPrintSetup.setOption('footerStrRight', '');
+   // clears user preferences always silent print value
+   // to enable using 'printSilent' option
+   jsPrintSetup.clearSilentPrint();
+   // Suppress print dialog (for this context only)
+   jsPrintSetup.setOption('printSilent', 1);
+   // Do Print 
+   // When print is submitted it is executed asynchronous and
+   // script flow continues after print independently of completetion of print process! 
+   jsPrintSetup.print();
+   // next commands
+&lt;/script&gt;
+</pre></code>
+<h2>Reference of JSPrintSetup object</h2>
+<div id="toc">
+<h3>Contents</h3>
+<h4><a  href="#METHODS">Methods</a></h4>
+<h5><a  href="#COMMON_METHODS">Common methods</a></h5>
+<ul>
+	<li><a href="#M_getVersion">getVersion</a></li>
+</ul>
+<h5><a  href="#PO_RELATED_METHODS">Printing Options related methods</a></h5>
+<ul>
+	<li><a href="#M_setOption">setOption</a></li>
+	<li><a href="#M_getOption">getOption</a></li>
+	<li><a href="#M_setGlobalOption">setGlobalOption</a></li>
+	<li><a href="#M_getGlobalOption">getGlobalOption</a></li>
+	<li><a href="#M_setPaperSizeUnit">setPaperSizeUnit</a>/<a href="#M_getPaperSizeUnit">getPaperSizeUnit</a></li>
+	<li><a href="#M_saveOptions">saveOptions</a></li>
+	<li><a href="#M_saveGlobalOptions">saveGlobalOptions</a></li>
+	<li><a href="#M_refreshOptions">refreshOptions</a></li>
+</ul>
+<h5><a href="#ENHANCED_PAPERHANDLING">Enhanced Paper data handling</a></h5>
+<ul>
+	<li><a href="#M_getPaperSizeList">getPaperSizeList</a></li>
+	<li><a href="#M_definePaperSize">definePaperSize</a></li>
+	<li><a href="#M_undefinePaperSize">undefinePaperSize</a></li>
+	<li><a href="#M_getPaperSizeDataByID">getPaperSizeDataByID</a></li>
+	<li><a href="#M_getPaperSizeData">getPaperSizeData</a></li>
+	<li><a href="#M_setPaperSizeData">setPaperSizeData</a></li>
+	<li><a href="#M_getPaperMeasure">getPaperMeasure</a></li>
+</ul>
+<h5><a href="#PRINTERS_HANDLING">Printers handling</a></h5>
+<ul>
+	<li><a href="#M_getPrintersList">getPrintersList</a></li>
+	<li><a href="#M_setPrinter">setPrinter</a></li>
+	<li><a href="#M_getPrinter">getPrinter</a></li>
+</ul>
+<h5><a href="#PRINT_PROCESS">Print process control and information</a></h5>
+<ul>
+	<li><a href="#M_print">print</a></li>
+	<li><a href="#M_printWindow">printWindow</a></li>
+	<li><a href="#M_setSilentPrint">setSilentPrint</a></li>
+	<li><a href="#M_getSilentPrint">getSilentPrint</a></li>
+	<li><a href="#M_clearSilentPrint">clearSilentPrint</a></li>
+	<li><a href="#M_setShowPrintProgress">setShowPrintProgress</a></li>
+	<li><a href="#M_getShowPrintProgress">getShowPrintProgress</a></li>
+	<li><a href="#M_setPrintProgressListener">setPrintProgressListener</a></li>
+</ul>
+<h5><a href="#SECURITY_ACCESS">Security Access Control</a></h5>
+<ul>
+	<li><a href="#M_getPermissions">getPermissions</a></li>
+	<li><a href="#M_askUserPermissions">askUserPermissions</a></li>
+	<li><a href="#M_setCallback">setCallback</a></li>
+</ul>
+<h4><a  href="#CONSTANTS">Constants</a></h4>
+</div>
+
+<h3 id="METHODS"><b>Methods</b></h3>
+<h4 id="COMMON_METHODS">Common methods</h4>
+<p id="M_getVersion"><b>wstring getVersion();</b></p>
+<p>Returns jsPrintSetup version. Implemented from version 0.9.0.</p>
+<h4 id="PO_RELATED_METHODS">Printing Options related methods</h4>
+<p id="M_setOption"><b>void setOption( in string option, in wstring value);</b></p>
+<p>Sets option value for currently selected printer. (See getPrinter and setPrinter methods)<br/>
+List of possible options are described in the following table:</p>
+<table cellspacing=0 cellpadding=3 border=1 width="100%">
+<colgroup>
+	<col width="200px">
+	<col>
+</colgroup>
+<thead>
+	<tr>
+		<td><b>Option</b></td>
+		<td><b>Description</b></td>
+	</tr>
+</thead>
+<tbody>
+	<tr>
+		<td valign="top">orientation</td>
+		<td valign="top">Paper orientation.<br/>Available values are kPortraitOrientation and kLandscapeOrientation.</td>
+	</tr>
+	<tr>
+		<td valign="top">
+marginTop<br/>
+marginBottom<br/>
+marginLeft<br/>
+marginRight<br/>
+		</td>
+		<td valign="top">
+Top, Bottom, Left and Right print margins.<br/>
+Margins by default are in millimeters.<br/>
+Margins units can be changed with setPaperSizeUnit method.<br/>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">
+headerStrCenter<br/>
+headerStrLeft<br/>
+headerStrRight<br/>
+		</td>
+		<td valign="top">
+Header strings at Left, Center and Right position.<br/>
+Special strings can be used for:<br/>
+&amp;T – title<br/>
+&amp;U – URL<br/>
+&amp;D – date/time<br/>
+&amp;P – current page<br/>
+&amp;PT – total number of pages<br/>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">
+footerStrCenter<br/>
+footerStrLeft<br/>
+footerStrRight<br/>
+		</td>
+		<td valign="top">
+Footer strings at Left, Center and Right position.<br/>
+Special strings can be used also as in header.<br/>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">shrinkToFit</td>
+		<td valign="top">Shring to fit to page. Available values 0 or 1.</td>
+	</tr>
+	<tr>
+		<td valign="top">numCopies</td>
+		<td valign="top">Number of copies.</td>
+	</tr>
+	<tr>
+		<td valign="top">outputFormat</td>
+		<td valign="top">Define Output Fiormat when printing to file. Available values are kOutputFormatNative, kOutputFormatPS, kOutputFormatPDF [FIXME]</td>
+	</tr>
+	<tr>
+		<td valign="top">toFileName</td>
+		<td valign="top">Name and path of output file. See outputFormat [FIXME]</td>
+	</tr>
+	<tr>
+		<td valign="top">paperData</td>
+		<td valign="top">Numeric value of paper size definition on Windows platform. See <a href="http://msdn.microsoft.com/en-us/library/dd319099%28v=vs.85%29.aspx">Windows Paper Sizes</a></td>
+	</tr>
+	<tr>
+		<td valign="top">paperName</td>
+		<td valign="top">Name of the paper for Unix Platfom. It seems that is some like <a href="http://library.gnome.org/devel/gtk/2.21/gtk-GtkPaperSize.html">GtkPaperSize</a>.</td>
+	</tr>
+	<tr>
+		<td valign="top">paperHeight</td>
+		<td valign="top">Paper Height in getPaperSizeUnit units. Warning! This property don't follow right dimension of selected paper. It is better to use getPaperMeasure method and all <a href="#ENHANCED_PAPERHANDLING">paper handling methods</a>.</td>
+	</tr>
+	<tr>
+		<td valign="top">paperWidth</td>
+		<td valign="top">Paper Width in getPaperSizeUnit units. See comment on paperHeight.</td>
+	</tr>
+	<tr>
+		<td valign="top">paperSizeType</td>
+		<td valign="top">On Windows platform control how to select paper from driver when print. There are two possible values kPaperSizeNativeData and kPaperSizeDefined.
+		If you are using kPaperSizeNativeData you select paper with paperData option. If you are using kPaperSizeDefined then paper is matched to nearest values for paperHeight, paperWidth options. [FIXME]
+		If you want to experiment with it, we recommend to use together with <a href="#ENHANCED_PAPERHANDLING">paper handling methods</a>.</td>
+	</tr>
+	<tr>
+		<td valign="top">paperSizeUnit</td>
+		<td valign="top">Paper size unit in which is stored by mozilla, not in units used by extension object. This option is read only and can’t be set.</td>
+	</tr>
+	<tr>
+		<td valign="top">scaling</td>
+		<td valign="top">Scaling in percents.</td>
+	</tr>
+	<tr>
+		<td valign="top">shrinkToFit</td>
+		<td valign="top">Boolean option. If true shrink size to be fit in page, else use scaling.</td>
+	</tr>
+	<tr>
+		<td valign="top">printRange</td>
+		<td valign="top">
+What to print.Available values are:<br/>
+kRangeAllPages – print all pages (by default)<br/>
+kRangeSpecifiedPageRange – print specified pages (see startPageRange and endPageRange)<br/>
+kRangeSelection – Prints selection<br/>
+kRangeFocusFrame – print focused frame<br/>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">startPageRange<br/>endPageRange</td>
+		<td valign="top">In case of printRange = kRangeSpecifiedPageRange start and end print range.</td>
+	</tr>
+	<tr>
+		<td valign="top">printSilent</td>
+		<td valign="top">Sets silent printing for current settings. Available values are 0 or 1.<br />
+		Setting of this option is valid only when user preference 'print.always_print_silent' is not set.<br />
+		When 'print.always_print_silent' is set, value of 'printSilent' option is ignored.<br />
+		To clear 'print.always_print_silent' option you can use clearSilentPrint method.</td>
+	</tr>
+	<tr>
+		<td valign="top">printBGColors</td>
+		<td valign="top">Turn On/Off printing of background colors. Available values are 0 or 1. (from version 0.8.2f)</td>
+	</tr>
+	<tr>
+		<td valign="top">printBGImages</td>
+		<td valign="top">Turn On/Off printing of background images. Available values are 0 or 1. (from version 0.8.2f)</td>
+	</tr>
+</tbody>
+</table>
+<p id="M_getOption"><b>wstring getOption(in wstring option);</b></p>
+Returns value of selected option for current printer.<br/>
+List of available options is described in setOption method.<br/>
+
+<p id="M_setGlobalOption"><b>void setGlobalOption( in string option, in wstring value);</b></p>
+<p id="M_getGlobalOption"><b>wstring getGlobalOption(in wstring option);</b></p>
+Sets/Gets global printing option. List of available options is described in setOption method.<br/>
+
+<p id="M_setPaperSizeUnit"><b>void setPaperSizeUnit(in short aPaperSizeUnit);</b></p>
+<p id="M_getPaperSizeUnit"><b>short getPaperSizeUnit();</b></p>
+Sets/Gets jsPrintSetup object Paper Size Units.<br/>
+Available values are kPaperSizeMillimeters (by default) and  kPaperSizeInches.
+
+<p id="M_saveOptions"><b>void saveOptions(in long optionSet);</b></p>
+Save currently selected printer options to user’s preferences in mozilla.<br/>
+optionSet is bit set which control which settings to be saved.<br/>
+List of available sets are described in self explanatory constants kSaveXXX.<br/>
+For example kSaveAll save all options.<br/>
+
+<p id="M_saveGlobalOptions"><b>void saveGlobalOptions(in long optionSet);</b></p>
+Save global printing options to user’s preferences in mozilla.<br/>
+optionSet is bit set which control which settings to be saved.<br/>
+List of available sets are described in self explanatory constants kSaveXXX.<br/>
+For example kSaveAll save all options.<br/>
+
+<p id="M_refreshOptions"><b>void refreshOptions();</b></p>
+Reread global and printer settings (options)  from users preferences saved in mozilla.
+
+<h4 id="ENHANCED_PAPERHANDLING">Enhanced Paper Handling Methods (introduced from version 0.9.0)</h4>
+<p>Because of different handling of paper information on different platforms, after detailed research was implemented methods which help to make easy to handle.</p>
+<p>For example on windows is user paperData property which is <a href="http://msdn.microsoft.com/en-us/library/dd319099%28v=vs.85%29.aspx">Windows Paper Size number</a>, but on Linux is used <a href="http://library.gnome.org/devel/gtk/2.21/gtk-GtkPaperSize.html">GtkPaperSize</a> as paperName.</p>
+<p>jsPrintSetup have build list of paper definitions which include this information for most used paper sizes, but also support method to add own paper definitions.</p>
+<p>Every paper definition contain following information:</b>
+<table cellspacing=0 cellpadding=3 border=1 width="100%">
+	<tr>
+		<td><b>PD</b></td>
+		<td>paperData See <a href="http://msdn.microsoft.com/en-us/library/dd319099%28v=vs.85%29.aspx">Windows Paper Size number</a></td>
+	</tr>
+	<tr>
+		<td><b>PN</b></td>
+		<td>paperName -> paperName -> Linux(Unix) paperName. See <a href="http://library.gnome.org/devel/gtk/2.21/gtk-GtkPaperSize.html">GtkPaperSize</a></td>
+	</tr>
+	<tr>
+		<td><b>PWG</b></td>
+		<td>Printing WorkGroup for <a href="ftp://ftp.pwg.org/pub/pwg/candidates/cs-pwgmsn10-20020226-5101.1.pdf">Media Standartizied Names</a></td>
+	</tr>
+	<tr>
+		<td><b>Name</b></td>
+		<td>Human readable Name</td>
+	</tr>
+	<tr>
+		<td><b>M</b></td>
+		<td>Measure for Width and Heidth can be kPaperSizeInches or kPaperSizeMillimeters</td>
+	</tr>
+	<tr>
+		<td><b>W</b></td>
+		<td>Width of paper in measure <b>M</b></td>
+	</tr>
+	<tr>
+		<td><b>H</b></td>
+		<td>Height of paper in measure <b>M</b></td>
+	</tr>
+</table>
+<p><b>jsPrintSetup builtin in paper definitons (first number is internal for jsPrinSetup paper ID)</b></p>
+<code><pre>
+  paperSizeList : {
+      1 : {PD: 1, PN: 'na_letter',   PWG: 'na_letter_8.5x11in',       Name: 'US Letter', W: 8.5 , H: 11, M: kPaperSizeInches}
+    , 2 : {PD: 2, PN: 'na_letter',   PWG: 'na_letter_8.5x11in',       Name: 'US Letter Small', W: 8.5 , H: 11, M: kPaperSizeInches} // pdf creator reports paper_data = 119!
+    , 3 : {PD: 3, PN: 'ppd_Tabloid', PWG: 'na_ledger_11x17in',        Name: 'US Tabloid', W: 11 , H: 17, M: kPaperSizeInches}
+    , 4 : {PD: 4, PN: 'ppd_Ledger',   PWG: '', /*???*/                 Name: 'US Ledger', W: 17 , H: 11, M: kPaperSizeInches}
+    , 5 : {PD: 5, PN: 'na_legal',    PWG: 'na_legal_8.5x14in',        Name: 'US Legal', W: 8.5 , H: 14, M: kPaperSizeInches}
+    , 6 : {PD: 6, PN: 'na_invoice',  PWG: 'na_invoice_5.5x8.5in',     Name: 'US Statement', W: 5.5 , H: 8.5, M: kPaperSizeInches}   // Half Letter
+    , 7 : {PD: 7, PN: 'na_executive',PWG: 'na_executive_7.25x10.5in', Name: 'US Executive', W: 7.25 , H: 10.5, M: kPaperSizeInches}
+    , 8 : {PD: 8, PN: 'iso_a3',      PWG: 'iso_a3_297x420mm',         Name: 'A3', W: 297 , H: 420, M: kPaperSizeMillimeters}
+    , 9 : {PD: 9, PN: 'iso_a4',      PWG: 'iso_a4_210x297mm',         Name: 'A4', W: 210 , H: 297, M: kPaperSizeMillimeters}
+    ,10 : {PD:10, PN: 'iso_a4',      PWG: 'iso_a4_210x297mm',         Name: 'A4 Small', W: 210 , H: 297, M: kPaperSizeMillimeters}
+    ,11 : {PD:11, PN: 'iso_a5',      PWG: 'iso_a5_148x210mm',         Name: 'A5', W: 148 , H: 210, M: kPaperSizeMillimeters}
+    ,12 : {PD:12, PN: 'jis_b4',      PWG: 'jis_b4_257x364mm',         Name: 'B4 (JIS)', W: 257 , H: 364, M: kPaperSizeMillimeters}
+    ,13 : {PD:13, PN: 'jis_b5',      PWG: 'jis_b5_182x257mm',         Name: 'B5 (JIS)', W: 182 , H: 257, M: kPaperSizeMillimeters}
+    ,14 : {PD:14, PN: 'om_folio',    PWG: 'om_folio_210x330mm',       Name: 'Folio', W: 210 , H: 330, M: kPaperSizeMillimeters}    // pdf creator FLSA
+    ,15 : {PD:15, PN: 'na_quarto',   PWG: 'na_quarto_8.5x10.83in',    Name: 'Quarto', W: 8.5 , H: 10.83, M: kPaperSizeInches}
+    ,16 : {PD:16, PN: 'na_10x14',    PWG: 'na_10x14_10x14in',         Name: '10x14 (envelope)', W: 10, H: 14, M: kPaperSizeInches}
+    ,17 : {PD:17, PN: 'na_ledger',   PWG: 'na_ledger_11x17in',        Name: '11x17 (envelope)', W: 11, H: 17, M: kPaperSizeInches} // pdf creator Tabloid
+    ,18 : {PD:18, PN: 'na_letter',   PWG: 'na_letter_8.5x11in',       Name: 'US Note', W: 8.5 , H: 11, M: kPaperSizeInches} // == letter
+    ,19 : {PD:19, PN: 'na_number-9', PWG: 'na_number-9_3.875x8.875in',Name: 'US Envelope #9', W: 3.875, H: 8.875, M: kPaperSizeInches}
+    ,20 : {PD:20, PN: 'na_number-10',PWG: 'na_number-10_4.125x9.5in', Name: 'US Envelope #10', W: 4.125, H: 9.5, M: kPaperSizeInches}
+    ,21 : {PD:21, PN: 'na_number-11',PWG: 'na_number-11_4.5x10.375in',Name: 'US Envelope #11', W: 4.5, H: 10.375, M: kPaperSizeInches}
+    ,22 : {PD:22, PN: 'na_number-12',PWG: 'na_number-12_4.75x11in',   Name: 'US Envelope #12', W: 4.75, H: 11, M: kPaperSizeInches}
+    ,23 : {PD:23, PN: 'na_number-14',PWG: 'na_number-14_5x11.5in',    Name: 'US Envelope #14', W: 5, H: 11.5, M: kPaperSizeInches}
+    ,24 : {PD:24, PN: 'na_c',        PWG: 'na_c_17x22in',             Name: 'C size sheet', W: 17, H: 22, M: kPaperSizeInches}
+    ,25 : {PD:25, PN: 'na_d',        PWG: 'na_d_22x34in',             Name: 'D size sheet', W: 22, H: 34, M: kPaperSizeInches}
+    ,26 : {PD:26, PN: 'na_e',        PWG: 'na_e_34x44in',             Name: 'E size sheet', W: 34, H: 44, M: kPaperSizeInches}
+    ,27 : {PD:27, PN: 'iso_dl',      PWG: 'iso_dl_110x220mm',         Name: 'Envelope DL', W: 110, H: 220, M: kPaperSizeMillimeters}
+    ,28 : {PD:28, PN: 'iso_c5',      PWG: 'iso_c5_162x229mm',         Name: 'Envelope C5', W: 162, H: 229, M: kPaperSizeMillimeters}
+    ,29 : {PD:29, PN: 'iso_c3',      PWG: 'iso_c3_324x458mm',         Name: 'Envelope C3', W: 324, H: 458, M: kPaperSizeMillimeters}
+    ,30 : {PD:30, PN: 'iso_c4',      PWG: 'iso_c4_229x324mm',         Name: 'Envelope C4', W: 229, H: 324, M: kPaperSizeMillimeters}
+    ,31 : {PD:31, PN: 'iso_c6',      PWG: 'iso_c6_114x162mm',         Name: 'Envelope C6', W: 114, H: 162, M: kPaperSizeMillimeters}
+    ,32 : {PD:32, PN: 'iso_c6c5',    PWG: 'iso_c6c5_114x229mm',       Name: 'Envelope C65', W: 114, H: 229, M: kPaperSizeMillimeters}
+    ,33 : {PD:33, PN: 'iso_b4',      PWG: 'iso_b4_250x353mm',         Name: 'Envelope B4', W: 250, H: 353, M: kPaperSizeMillimeters}
+    ,34 : {PD:34, PN: 'iso_b5',      PWG: 'iso_b5_176x250mm',         Name: 'Envelope B5', W: 176, H: 250, M: kPaperSizeMillimeters}
+    ,35 : {PD:35, PN: 'iso_b6',      PWG: 'iso_b6_125x176mm',         Name: 'Envelope B6', W: 125, H: 176, M: kPaperSizeMillimeters}
+    ,36 : {PD:36, PN: 'om_italian',  PWG: 'om_italian_110x230mm',     Name: 'Italian Envelope', W: 110, H: 230, M: kPaperSizeMillimeters}
+    ,37 : {PD:37, PN: 'na_monarch',  PWG: 'na_monarch_3.875x7.5in',   Name: 'US Envelope Monarch', W: 3.875, H: 7.5, M: kPaperSizeInches}
+    ,38 : {PD:38, PN: 'na_personal', PWG: 'na_personal_3.625x6.5in',  Name: 'US Personal Envelope', W: 3.625, H: 6.5, M: kPaperSizeInches} // 6 3/4 Envelope
+    ,39 : {PD:39, PN: 'na_fanfold-us',PWG:'na_fanfold-us_11x14.875in',Name: 'US Std Fanfold', W: 11, H: 14.875, M: kPaperSizeInches}
+    ,40 : {PD:40, PN: 'na_fanfold-eur',PWG:'na_fanfold-eur_8.5x12in', Name: 'German Std Fanfold', W: 8.5, H: 12, M: kPaperSizeInches}
+    ,41 : {PD:41, PN: 'na_foolscap', PWG:'na_foolscap_8.5x13in',      Name: 'German Legal Fanfold', W: 8.5, H: 13, M: kPaperSizeInches}
+    // 42 = ISO B4? === 33 by paper size
+    ,43 : {PD:43, PN: 'jpn_hagaki',  PWG:'jpn_hagaki_100x148mm',      Name: 'Japanese Postcard', W: 100, H: 148, M: kPaperSizeMillimeters}
+  },
+</pre></code>
+<p id="M_getPaperSizeList"><b>wstring getPaperSizeList(); (from ver.0.9.0)</b></p>
+Return JSON string of all paper definitions.
+
+<p id="M_definePaperSize"><b>void definePaperSize(in short jspid, in short pd, in wstring pn, in wstring pwg, in wstring name, in double w, in double h, in short m); (from ver.0.9.0)</b></p>
+Define paper data. All parameters correspon of paper definition data but in small letters. <b>jspid</b> is internal jsPrintSetup paper ID.
+
+<p id="M_undefinePaperSize"><b>void undefinePaperSize(in short jspid); (from ver.0.9.0)</b></p>
+Remove paper definition with jsPrintSetup paper ID.
+
+<p id="M_getPaperSizeDataByID"><b>wstring getPaperSizeDataByID(in short jspid); (from ver.0.9.0)</b></p>
+Returns JSON string with paper definition for paper with given jsPrintSetup paper ID.
+
+<p id="M_getPaperSizeData"><b>wstring getPaperSizeData(); (from ver.0.9.0)</b></p>
+Returns JSON string with paper definition for currently used paper.
+
+<p id="M_setPaperSizeData"><b>void setPaperSizeData(in short jspid); (from ver.0.9.0)</b></p>
+Set current paper to be used for print. Paper is select by jsPrintSetup paper ID.
+
+<p id="M_getPaperMeasure"><b>wstring getPaperMeasure(); (from ver.0.9.0)</b></p>
+Returns paper measures as JSON string for currently selected paper.<br/>
+Object contain Width and Height of paper in paperSizeUnits measure. If paper exact match of some paper definition it is returned, else us used paperHeight and paperWidth options.
+ 
+<h4 id="PRINTERS_HANDLING">Printers Handling</h4>
+<p id="M_getPrintersList"><b>wstring getPrintersList();</b></p>
+Returns comma separated list of available printers. There is known problems on Mac OSX with this method see <a href="https://www.mozdev.org/bugs/show_bug.cgi?id=22369" target="_blank">Bug 22369</a>.
+
+<p id="M_setPrinter"><b>void setPrinter(in wstring aPrinterName);</b></p>
+Set current printer.
+
+<p id="M_getPrinter"><b>wstring getPrinter();</b></p>
+Returns currently selected printer.
+
+<h4 id="PRINT_PROCESS">Print process control and information</h4>
+
+<p id="M_print"><b>void print();</b></p>
+Prints content of most recent browser window to currently selected printer with current settings like window.print method.<br/>
+The difference between window.print() and jsPrintSetup.print() is that window.print() prints using settings saved in user preferences, while jsPrintSetup.print() print with current printer settings stored in jsPrintSetup.
+
+<p id="M_printWindow"><b>void printWindow(in nsIDOMWindow aWindow);</b></p>
+This method is similar to print() method but have a parameter which pass window (frame to print).<br/>
+I will illustrate it with example:<br/>
+If you have main.html which include frame.html whats happen:<br/>
+
+<code><pre>
+--- frame.html ----
+....
+&lt;script&gt;
+function test() {
+   jsPrintSetup.setPrinter('PDFCreator');
+   jsPrintSetup.setSilentPrint(1);
+   jsPrintSetup.setOption('headerStrCenter', 'bla bla frame');
+   jsPrintSetup.setOption('headerStrRight', '');
+   // here window is current frame!
+   jsPrintSetup.printWindow(window);
+   jsPrintSetup.setSilentPrint(0);
+}
+&lt;/script&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+&lt;a href="javascript: test();"&gt;Test&lt;/a&gt;
+ &lt;/body&gt;
+&lt;/html&gt;
+
+--- main.html ----
+&lt;script&gt;
+function test1() {
+   jsPrintSetup.setPrinter('PDFCreator');
+   jsPrintSetup.setSilentPrint(1);
+   jsPrintSetup.setOption('headerStrCenter', 'bla bla main');
+   jsPrintSetup.setOption('headerStrRight', '');
+// print current window with all frames in it
+   jsPrintSetup.printWindow(window);
+// print desired frame
+//    jsPrintSetup.printWindow(window.frames[0]);
+   jsPrintSetup.setSilentPrint(0);
+}
+&lt;/script&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+&lt;iframe name="test" src="frame.html"&gt;&lt;/iframe&gt;
+&lt;a href="javascript: test1();"&gt;Test&lt;/a&gt;
+ &lt;/body&gt;
+&lt;/html&gt;
+</pre></code>
+
+<p id="M_setSilentPrint"><b>void setSilentPrint(in boolean flag);</b></p>
+Turn On/Off print dialog through manipulating user preferences setting 'print.always_print_silent'.
+This method manipulate setting stored in user’s preferences and have global sense for mozilla, 
+i.e. this behavior is for all tabs and windows opened in mozilla and will be active until next change or 
+manual edit in about:config.<br />
+Recommended scenario of usage will be:
+<code><pre>
+&lt;script&gt;
+   var oldSilentPrint = jsPrintSetup.getSilentPrint();
+   jsPrintSetup.setSilentPrint(true);
+   jsPrintSetup.print();
+   jsPrintSetup.setSilentPrint(oldSilentPrint);
+&lt;/script&gt;
+</pre></code>
+<b>Important Note!</b> Because print method is executed asynchronously when setSilentPrint(false) is called 
+imediately after print method, dialog may be appear (see bug <a target="_blank" href="https://www.mozdev.org/bugs/show_bug.cgi?id=21473">21473</a>).
+To workaround this you can use 'printSilent' option instead, which is take in care only when user preference 'print.always_print_silent' is not set.
+Then scenario will be the following:
+<code><pre>
+&lt;script&gt;
+   jsPrintSetup.clearSilentPrint();
+   jsPrintSetup.setOption('printSilent', 1);
+   jsPrintSetup.print();
+&lt;/script&gt;
+</pre></code>
+<p id="M_getSilentPrint"><b>boolean getSilentPrint();</b></p>
+Returns current value for SilentPrint. (See setSilentPrint)
+
+<p id="M_clearSilentPrint"><b>void clearSilentPrint();</b></p>
+(added from version 0.8.2e)<br/>
+Clears the value of 'print.always_print_silent' setting stored in user’s preferences.<br />
+This method is different from setSilentPrint(false), see notes and example for setSilentPrint method about 'printSilent' option. 
+
+<p id="M_setShowPrintProgress"><b>void setShowPrintProgress(in boolean flag);</b></p>
+Turn On/Off printing progress window.<br/>
+This method manipulate setting stored in user’s preferences and have global sense for mozilla, i.e. this behavior is for all tabs and windows opened in mozilla and will be active until next change or manual edit in about:config.<br/>
+Recommended scenario of usage will be:<br/>
+<code><pre>
+&lt;script&gt;
+   var oldShowPrintProgress = jsPrintSetup. getShowPrintProgress();
+   jsPrintSetup. setShowPrintProgress(false);
+   jsPrintSetup.print();
+   jsPrintSetup. setShowPrintProgress(oldShowPrintProgress);
+&lt;/script&gt;
+</pre></code>
+
+<p id="M_getShowPrintProgress"><b>boolean getShowPrintProgress();</b></p>
+Returns current value for ShowPrintProgress. (See setShowPrintProgress)
+
+<p id="M_setPrintProgressListener"><b>void setPrintProgressListener(in nsIWebProgressListener listener);</b> (available from ver. 0.8.2g)</p>
+(Special thanks to Josh Stutts for implementing this method)<br/>
+This method can set custom print progress listener function.<br/>
+Method accept as parameter object that supports nsIWebProgressListener interface.<br/>
+About nsIWebProgressListener interface can read more at <a href="http://developer.mozilla.org/en/nsIWebProgressListener" target="_blank">http://developer.mozilla.org/en/nsIWebProgressListener</a>
+or <a href="http://www.oxymoronical.com/experiments/xpcomref/applications/Firefox/3.5/interfaces/nsIWebProgressListener" target="_blank">http://www.oxymoronical.com/experiments/xpcomref/applications/Firefox/3.5/interfaces/nsIWebProgressListener</a>.<br/>
+<br/>
+Example:<code><pre>
+&lt;script&gt;
+// define progress listener object
+var progressListener = {
+   stateIsRequest:false,
+   QueryInterface : function(aIID) {
+     if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
+         aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+         aIID.equals(Components.interfaces.nsISupports))
+         return this;
+     throw Components.results.NS_NOINTERFACE;
+   },
+   
+   onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus) {
+     alert('State Change -&gt; State Flags:'+aStateFlags+' Status:'+aStatus);
+     return 0;
+   },
+   
+   onLocationChange : function(aWebProgress, aRequest, aLocation) {
+     return 0;
+   },
+   
+   onProgressChange : function(aWebProgress, aRequest,
+     aCurSelfProgress, aMaxSelfProgress,
+     aCurTotalProgress, aMaxTotalProgress){
+     alert('Self Current:'+aCurSelfProgress+' Self Max:'+aMaxSelfProgress
+             +' Total Current:'+aCurTotalProgress+' Total Max:'+aMaxTotalProgress);
+   },
+   
+   onStatusChange : function(aWebProgress, aRequest, aStateFlags, aStatus) {
+     alert('Status Change -&gt; State Flags:'+aStateFlags+' Status:'+aStatus);
+   },
+   onSecurityChange : function(aWebProgress, aRequest, aState){}
+   //    onLinkIconAvailable : function(a){}
+};
+
+
+function test() {
+   // sets printer 
+   jsPrintSetup.setPrinter('PDFCreator');
+   // sets print progress object
+   jsPrintSetup.setPrintProgressListener(progressListener);
+   // sets silent printing
+   jsPrintSetup.setSilentPrint(true);
+   // do print
+   jsPrintSetup.print();
+   // restore silent printing
+   jsPrintSetup.setSilentPrint(false);
+}
+&lt;/script&gt;
+</pre></code>
+
+<h4 id="SECURITY_ACCESS">Security Access Control (Important New feature implemented from ver. 0.9.0)</h4>
+
+<b style="color: red;">Important Note!</b><br />
+If your application is not conformable with jsPrintSetup access control, most of features of jsPrintSetup will 
+be inaccessible if user who is using application block access to jsPrintSetup on first request for permission.
+<br />
+Your application must implement these methods to get information about user's decision and rerequest permissions if needed or get alternate decision.
+<br />
+<br />
+
+It is very important to control who can use jsPrintSetup to manipulate your printer settings.<br />
+jsPrintSetup implements Firefox permission manager to controls host access to jsPrintSetup. List of Allowed and Blocked hosts.<br/>
+Here is right point to mention that these features are realised with valuable help of Guillaume Crico.<br/> 
+jsPrintSetup have implemented some new options (addon options dialog) and methods for programmers about security.<br />
+<b>jsPrintSetup Security options</b><br />
+<table cellspacing=0 cellpadding=3 border=1 width="100%">
+	<tr>
+		<td><b>Security Mode</b></td>
+		<td>There are three options:<br />
+			- Enable access from all sites. Equal of that no restrictions<br/>
+			- Enable access ONLY from allowed sites. Blocked sites are silently denied.<br/>
+			- Automatic Prompt for permission if host is not Allowed or Blocked.(By default) <br/>
+		</td>
+	</tr>
+	<tr>
+		<td><b>Enable access from local files</b></td>
+		<td>Allow/Block access from local files is treated by different way. They are not controlled from permission manager (this is FF permission manager speciality). By default is enabled.</td>
+	</tr>
+	<tr>
+		<td><b>Enable rerequest permissions from blocked sites</b></td>
+		<td>Is site is in Black list this enable calling of <a href="#M_askUserPermissions">jsPrintSetup.askUserPermissions</a>. By default is enabled.</td>
+	</tr>
+</table>
+
+<p id="M_SECURITY"><b>Security Methods</b></p>
+	
+<p id="M_getPermissions"><b>PRUint32 getPermissions();</b></p>
+Returns current permissions over jsPrintSetup. See permisions constants JSPS_ALLOW_ACTION, JSPS_DENY_ACTION, JSPS_UNKNOWN_ACTION.  
+
+<p id="M_askUserPermissions"><b>void askUserPermissions(in jsPrintSetupCallback callback);</b></p>
+Initiate jsPrintSetup to request access from user. It accepts optional callback object (or null) which is called on user decision (Alock/Allow).  
+ 
+<p id="M_setCallback"><b>void setCallback(in jsPrintSetupCallback callback);</b></p>
+Set jsPrintSetup callback object which at this moment implements only two method related to security.<br />
+permissionsCheck(in boolean enabled) which is called with result of internal for jsPrintSetup check of permissions.<br />
+permissionsAsk(in boolean allowed) which is called after user give decision of request for permission.<br />
+
+<p><b>jsPrintSetup callback definition</b></p>
+<code><pre>
+interface jsPrintSetupCallback : nsISupports
+{
+   void permissionsCheck(in boolean enabled);
+   void permissionsAsk(in boolean allowed);
+}; 
+</pre></code>
+
+<p><b>Sample Example</b></p>
+<code><pre>
+&lt;script&gt;
+
+var jsPrintSetupCallbackObject = {
+   permissionsCheck: function(enabled) {
+      alert('permissionsCheck:'+(enabled?'enabled':'disabled'));
+   },
+   permissionsAsk: function(allowed) {
+      alert('permissionsAsk:'+(allowed?'allowed':'blocked'));
+   }
+}
+
+function checkUseJSPrintSetup()
+{
+   jsPrintSetup.setCallback(jsPrintSetupCallbackObject);
+   var perm = jsPrintSetup.getPermissions();
+   if (perm == jsPrintSetup.JSPS_DENY_ACTION) {
+      // if you don't want to set callback pass null
+      jsPrintSetup.askUserPermissions(null);
+   } // else jsPrintSetup will request automatically
+   // requiest arbitrary method from jsPrintSetup which require permission 
+   this.alert(jsPrintSetup.getPrinter());
+}
+&lt;/script&gt;
+</pre></code>
+  
+<h3 id="CONSTANTS">Constants</h3>
+Constants are displayed in self explanatory as defined in IDL file.<br/>
+<code><pre>
+   // Save Options Constants   
+   const unsigned long kSaveOddEvenPages = nsIPrintSettings::kInitSaveOddEvenPages; 
+   const unsigned long kSaveHeaderLeft = nsIPrintSettings::kInitSaveHeaderLeft;
+   const unsigned long kSaveHeaderCenter = nsIPrintSettings::kInitSaveHeaderCenter;
+   const unsigned long kSaveHeaderRight = nsIPrintSettings::kInitSaveHeaderRight;
+   const unsigned long kSaveFooterLeft = nsIPrintSettings::kInitSaveFooterLeft;
+   const unsigned long kSaveFooterCenter = nsIPrintSettings::kInitSaveFooterCenter;
+   const unsigned long kSaveFooterRight = nsIPrintSettings::kInitSaveFooterRight;
+   const unsigned long kSaveBGColors  = nsIPrintSettings::kInitSaveBGColors ;
+   const unsigned long kSaveBGImages = nsIPrintSettings::kInitSaveBGImages;
+   const unsigned long kSavePaperSize = nsIPrintSettings::kInitSavePaperSize;
+   const unsigned long kSavePaperData = nsIPrintSettings::kInitSavePaperData;
+   const unsigned long kSavePaperSizeNativeData = nsIPrintSettings:: kPaperSizeNativeData;
+   const unsigned long kSavePaperWidth = nsIPrintSettings::kInitSaveUnwriteableMargins;
+   const unsigned long kSavePaperHeight = nsIPrintSettings::kInitSaveEdges;
+   const unsigned long kSaveInColor = nsIPrintSettings::kInitSaveInColor;
+   const unsigned long kSaveOrientation = nsIPrintSettings::kInitSaveOrientation;
+   const unsigned long kSavePrinterName = nsIPrintSettings::kInitSavePrinterName;
+   const unsigned long kSavePageDelay = nsIPrintSettings::kInitSavePageDelay;
+   const unsigned long kSaveMargins = nsIPrintSettings::kInitSaveMargins;
+   const unsigned long kSaveShrinkToFit = nsIPrintSettings::kInitSaveShrinkToFit;
+   const unsigned long kSaveResolutionName = nsIPrintSettings::kInitSaveResolutionName;
+   
+   const unsigned long  kSaveScaling = nsIPrintSettings:: kInitSaveScaling;
+
+   // Page Size Unit Constants 
+   const short kPaperSizeInches      = nsIPrintSettings::kPaperSizeInches;
+   const short kPaperSizeMillimeters = nsIPrintSettings::kPaperSizeMillimeters;
+
+   // Page Orientation Constants
+   const short kPortraitOrientation  = nsIPrintSettings::kPortraitOrientation;
+   const short kLandscapeOrientation = nsIPrintSettings::kLandscapeOrientation;
+
+   // Paper Size Data Constants
+   const short kPaperSizeNativeData  = nsIPrintSettings::kPaperSizeNativeData;
+   const short kPaperSizeDefined     = nsIPrintSettings::kPaperSizeDefined;
+   
+   // Print Range Enums 
+   const long kRangeAllPages           = nsIPrintSettings::kRangeAllPages;
+   const long kRangeSpecifiedPageRange = nsIPrintSettings::kRangeSpecifiedPageRange;
+   const long kRangeSelection          = nsIPrintSettings::kRangeSelection;
+   const long kRangeFocusFrame         = nsIPrintSettings::kRangeFocusFrame;
+
+   // Output format
+   const short kOutputFormatNative = nsIPrintSettings::kOutputFormatNative;
+   const short kOutputFormatPS = nsIPrintSettings::kOutputFormatPS;
+   const short kOutputFormatPDF = nsIPrintSettings::kOutputFormatPDF;
+   
+   // Shorthand Combined Saving Constants
+   const unsigned long kSaveHeader = 
+                                kSaveHeaderLeft | kSaveHeaderCenter | kSaveHeaderRight | 
+                                kSaveFooterLeft | kSaveFooterCenter | kSaveFooterRight;
+   const unsigned long kSaveMarginsAndOrientation = 
+                                    kSaveOrientation | kSaveMargins;
+   const unsigned long kSaveMarginsAndHeader =
+                                 kSaveHeader | kSaveMarginsAndOrientation;
+   const unsigned long kSaveAll = 
+                                kSaveOddEvenPages 
+                              | kSaveHeaderLeft |kSaveHeaderCenter | kSaveHeaderRight  
+                              | kSaveFooterLeft | kSaveFooterCenter | kSaveFooterRight 
+                              | kSaveBGColors | kSaveBGImages 
+                              | kSavePaperSize | kSavePaperData | kSavePaperSizeNativeData 
+                              | kSavePaperWidth | kSavePaperHeight | kSaveInColor 
+                              | kSaveOrientation |   kSavePrinterName | kSavePageDelay 
+                              | kSaveMargins |   kSaveShrinkToFit | kSaveScaling 
+                              | kSaveResolutionName;
+
+   // Permissions constants                              
+   const PRUint32 JSPS_ALLOW_ACTION = nsIPermissionManager::ALLOW_ACTION;
+   const PRUint32 JSPS_DENY_ACTION = nsIPermissionManager::DENY_ACTION;
+   const PRUint32 JSPS_UNKNOWN_ACTION = nsIPermissionManager::UNKNOWN_ACTION;
+
+</pre></code>

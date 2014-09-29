@@ -1,0 +1,80 @@
+<!-- MAIN CONTENT -->
+<table>
+<tr valign="top">
+<td>         
+	<h2>JSPrintSetup extension</h2>
+Client side Javascript printer settings.
+This extension implements print setup from CS Javascript, similar of MeadCo's ScriptX ActiveX control for Internet Explorer.</br>
+Extension creates global object called 'jsPrintSetup', which implements methods to get/set print Page Setup options. This is useful for developers which want to control page setup options from their Javascript code. 
+	<h2>Extension Features</h2>
+	<ul>
+		<li>Get/Set print settings - margins, orientation, scaling, header and footer
+		<li>Get/Set global print settings and for selected printer
+		<li>Working with installed printers
+		<li>Save print settings to user preferences
+		<li>Print with current setttings without need from saving to user pereferences as required from 'window.print()'
+		<li>Print desired window or frame
+		<li>Unattended printing without print dialog
+		<li>Enhanced Paper data handling
+		<li>Host based Security Access Control<br />
+<b style="color: red;">Important Note!</b><br />
+If your application is not conformable with jsPrintSetup access control, most of features of jsPrintSetup will 
+be inaccessible if user who is using application block access to jsPrintSetup on first request for permission.
+<br />
+Your application must implement these methods to get information about user's decision and rerequest permissions if needed or get alternate decision.
+<br />
+<br />
+	</ul>
+</td>
+
+<td valign="top">
+<!-- ***************** INFO/NEWS *************** -->
+<div id="infoTabs">
+	<div class="infoTab" id="whats-new">
+		<h5 class="infoHeader">What's New</h5>
+		<ul>
+			<li><a href="http://downloads.mozdev.org/jsprintsetup/jsprintsetup-0.9.2.xpi">JSPrintSetup&nbsp;0.9.2</a>&nbsp;compatible&nbsp;with&nbsp;Firefox&nbsp;11.&nbsp;Fixed setPrintProgressListener method parameter to be compatible with Firefox 11.</li>
+			<li><a href="http://downloads.mozdev.org/jsprintsetup/jsprintsetup-0.9.1.xpi">JSPrintSetup 0.9.1</a> compatible with Firefox 6. Fixed printWindow method parameter to be compatible with Firefox 6 and early versions.</li>
+			<li><a href="http://downloads.mozdev.org/jsprintsetup/jsprintsetup-0.9.0.xpi" target="_blank">JSPrintSetup 0.9.0</a> is ready.</li>
+			<li><a href="http://downloads.mozdev.org/jsprintsetup/jsprintsetup-0.9.0rc1.xpi" target="_blank">JSPrintSetup 0.9.0rc1</a> Step to finalization of version. With bug fix in setPaperSizeData</li>
+<!--			<li><a href="http://downloads.mozdev.org/jsprintsetup/jsprintsetup-0.9.0beta3.xpi" target="_blank">JSPrintSetup 0.9.0beta3</a> version with lot of new features. FF4 compatible. Host based Security Access Control. Better paper handling. Bulgarian, French and Spanish localization</li> -->
+			<li><a href="http://downloads.mozdev.org/jsprintsetup/jsprintsetup-0.8.2h.xpi" target="_blank">JSPrintSetup 0.8.2h</a> Workaround printing always to default printer and use default printer settings under Linux</li>
+			<li><a href="http://downloads.mozdev.org/jsprintsetup/jsprintsetup-0.8.2g.xpi" target="_blank">JSPrintSetup 0.8.2g</a> for Firefox 3.6 is available plus progress listener feature</li>
+<!-- 
+			<li><a href="http://downloads.mozdev.org/jsprintsetup/jsprintsetup-0.8.2f.xpi" target="_blank">JSPrintSetup 0.8.2f</a> Added new options printBGColors, printBGImages</li>
+			<li><a href="http://downloads.mozdev.org/jsprintsetup/jsprintsetup-0.8.2e.xpi" target="_blank">JSPrintSetup 0.8.2e</a> Fixed bug <a href="https://www.mozdev.org/bugs/show_bug.cgi?id=21473">21473</a></li>
+			<li><a href="http://downloads.mozdev.org/jsprintsetup/jsprintsetup-0.8.2d.xpi" target="_blank">JSPrintSetup 0.8.2d</a> Fixed bug <a href="https://www.mozdev.org/bugs/show_bug.cgi?id=21302">21302</a> and improved for FF for Mac</li>
+			<li><a href="http://downloads.mozdev.org/jsprintsetup/jsprintsetup-0.8.2b.xpi" target="_blank">JSPrintSetup 0.8.2b</a> for Firefox 3.5 is available</li>
+			<li><a href="http://addons.mozilla.org/en-US/firefox/addon/8966" target="_blank">JSPrintSetup</a> extension is hosted at mozdev.org now</li>
+-->			
+			<!-- <li>More news items go here</li> -->
+			<li><a href="http://www.mozdev.org/">mozdev.org</a></li>
+		</ul>
+	</div>
+<!-- 
+	<div class="infoTab" id="other-stuff">
+		<h5 class="infoHeader">Other Stuff</h5>
+		<ul>
+			<li>stuff goes here</li>
+			<li>more stuff goes here</li>
+		</ul>
+	</div>
+-->
+
+<!-- alternative image/table base tab works better in NS4 -->
+<!--
+	<div class="infoTab" id="whats-new-image">
+		<h5 class="infoHeader"><img src="http://www.mozdev.org/sharedimages/whatsnew_top.gif" width="154" alt="What's New"></h5>
+		<div class="infoItems">
+			<div>News item goes here</div>
+			<div>More news item goes here</div>
+			<div><a href="http://mozdev.org/">mozdev.org</a></div>
+		</div>
+	</div>
+-->
+</div>
+<!-- ***************** INFO/NEWS *************** -->
+</td>
+</tr>
+</table>
+

@@ -1,0 +1,38 @@
+@import url("http://www.mozdev.org/project.css");
+/*
+@import url("/hide_from_ns4.css");
+*/
+
+h2 {
+  font-family: helvetica,arial,sans-serif;
+  font-size: 12pt;
+  color: #970000;
+  background-color:#FFCC77;
+  padding: 2px;
+
+}
+h3 {
+  font-family: helvetica,arial,sans-serif;
+  font-size: 11pt;
+  color: #970000;
+  background-color:transparent;
+  border-bottom: 3px solid #FFCC77;
+}
+h1 {
+  font-family: helvetica,arial,sans-serif;
+  font-size: 16pt;
+  font-weight: bold;
+  color: #970000;
+  background-color:transparent;
+  border-bottom: 3px solid #FFCC77;
+}
+
+b2 {
+  font-weight: bold;
+  color: #970000;
+}
+
+.infoTab {
+  margin: 10px;
+  width: 250px;
+}
